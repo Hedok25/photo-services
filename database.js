@@ -33,6 +33,31 @@ function initDatabase() {
             console.error('Ошибка создания таблицы:', err);
         } else {
             console.log('Таблица photos готова');
+            // Добавляем новые столбцы, если они не существуют
+            addColumnIfNotExists('source', 'TEXT');
+            addColumnIfNotExists('hash', 'TEXT');
+            addColumnIfNotExists('marketplace_sku', 'TEXT');
+        }
+    });
+}
+
+// Функция для добавления столбца, если он не существует
+function addColumnIfNotExists(columnName, columnType) {
+    db.all(`PRAGMA table_info(photos)`, (err, columns) => {
+        if (err) {
+            console.error('Ошибка получения информации о таблице:', err);
+            return;
+        }
+
+        const columnExists = columns.some(col => col.name === columnName);
+        if (!columnExists) {
+            db.run(`ALTER TABLE photos ADD COLUMN ${columnName} ${columnType}`, (err) => {
+                if (err) {
+                    console.error(`Ошибка добавления столбца ${columnName}:`, err);
+                } else {
+                    console.log(`Столбец ${columnName} успешно добавлен`);
+                }
+            });
         }
     });
 }

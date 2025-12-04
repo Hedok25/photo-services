@@ -1,0 +1,6 @@
+{
+    "wb_api_key": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjUwNTIwdjEiLCJ0eXAiOiJKV1QifQ.eyJlbnQiOjEsImV4cCI6MTc2ODUxNjM3MiwiaWQiOiIwMTk4MTdmMS1iNDBlLTc3MzEtOGQ1My0zYjE2Yzg0NzBjZjYiLCJpaWQiOjIwNDIzNzY5MSwib2lkIjo4NTMzOCwicyI6NDE1OCwic2lkIjoiZGE1YzczMjktZTM1NC01Njg2LTk1YmMtZGRmYmQ4MTQzNWJjIiwidCI6ZmFsc2UsInVpZCI6MjA0MjM3NjkxfQ.4QgqzFHO3o8hIyQ87CmU0ppp-jj6ArE9SSa_In1DUb4Bg1xHlr0fNWqRC1gNUVWJndInalwBHVd9uRm1VC-HJQ",
+    "ozon_client_id": 2132482,
+    "ozon_api_key": "2c7148f1-4755-4c85-a4ea-ec81edfaf6e5",
+    "sync_schedule": "*/30 * * * *"
+}
