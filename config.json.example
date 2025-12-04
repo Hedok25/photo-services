@@ -1,6 +1,0 @@
-{
-    "wb_api_key": "YOUR_WILDBERRIES_API_KEY",
-    "ozon_client_id": "YOUR_OZON_CLIENT_ID",
-    "ozon_api_key": "YOUR_OZON_API_KEY",
-    "sync_schedule": "*/30 * * * *"
-}
