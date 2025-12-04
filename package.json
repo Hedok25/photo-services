@@ -8,7 +8,6 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "axios": "^1.6.8",
     "express": "^4.21.2",
     "fs": "0.0.1-security",
     "multer": "^1.4.5-lts.1",
@@ -18,7 +17,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "jest": "^30.2.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^7.1.4"
   },
   "keywords": [],
   "author": "",

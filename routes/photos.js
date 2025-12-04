@@ -7,16 +7,19 @@ const db = require('../database');
 
 const router = express.Router();
 
-// Создаем папку для загрузок если её нет
-const uploadDir = path.join(__dirname, '../uploads/images');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
 // Настройка multer для загрузки файлов
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, uploadDir);
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        
+        const dir = path.join(__dirname, `../uploads/images/${year}/${month}`);
+        
+        // Создаем папку, если её нет
+        fs.mkdirSync(dir, { recursive: true });
+
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         const uniqueName = uuidv4() + path.extname(file.originalname);
@@ -49,11 +52,15 @@ router.post('/upload', upload.single('photo'), (req, res) => {
             return res.status(400).json({ error: 'Файл не загружен' });
         }
 
+        // Получаем относительный путь от папки uploads
+        const relativePath = path.relative(path.join(__dirname, '../uploads'), req.file.path)
+                                 .replace(/\\/g, '/');
+
         const { description, tags } = req.body;
         const fileInfo = {
             filename: req.file.filename,
             original_name: req.file.originalname,
-            file_path: `/uploads/images/${req.file.filename}`,
+            file_path: `/uploads/${relativePath}`,
             file_size: req.file.size,
             mime_type: req.file.mimetype,
             description: description || '',
@@ -62,8 +69,8 @@ router.post('/upload', upload.single('photo'), (req, res) => {
 
         // Сохраняем в БД
         db.run(`
-            INSERT INTO photos (filename, original_name, file_path, file_size, mime_type, description, tags)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO photos (filename, original_name, file_path, file_size, mime_type, description, tags, source)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `, [
             fileInfo.filename,
             fileInfo.original_name,
@@ -71,7 +78,8 @@ router.post('/upload', upload.single('photo'), (req, res) => {
             fileInfo.file_size,
             fileInfo.mime_type,
             fileInfo.description,
-            fileInfo.tags
+            fileInfo.tags,
+            'local' // Указываем источник
         ], function(err) {
             if (err) {
                 console.error('Ошибка сохранения в БД:', err);
@@ -111,6 +119,7 @@ router.get('/', (req, res) => {
     });
 });
 
+module.exports = router;
 // Получить фото по ID
 router.get('/:id', (req, res) => {
     const photoId = req.params.id;
