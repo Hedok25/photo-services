@@ -242,7 +242,7 @@ async function processProductPhotos(product, source) {
         } else {
             // Новое или измененное фото, сохраняем как новую запись
             const stats = await fs.promises.stat(tempPath);
-            const filePath = `/uploads/images/${dirName}/${newFileName}`;
+            const filePath = `/data/uploads/images/${dirName}/${newFileName}`;
 
             const query = `INSERT INTO photos (filename, original_name, file_path, file_size, mime_type, description, tags, source, hash, marketplace_sku)
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
